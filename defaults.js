@@ -5,7 +5,7 @@ const DEFAULT_INGREDIENTS = [
   { name: 'ปลา' }, { name: 'เกลือ' }, { name: 'ไก่' },
 ];
 
-const DEFAULT_STOCK = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23];
+const DEFAULT_STOCK = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 const DEFAULT_MENUS = [
   { name: 'ซี่โครงแกะ', score: 40, recipe: [2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
