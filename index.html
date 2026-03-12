@@ -5,379 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Menu Optimizer</title>
-  <style>
-    :root {
-      --primary: #1e40af;
-      --primary-light: #3b82f6;
-      --success: #16a34a;
-      --danger: #dc2626;
-      --warn: #d97706;
-      --bg: #f1f5f9;
-      --border: #94a3b8;
-      --border-light: #cbd5e1;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Segoe UI', 'Sarabun', sans-serif;
-      background: var(--bg);
-      color: #1e293b;
-      font-size: 13px;
-    }
-
-    /* ── Header ── */
-    header {
-      background: var(--primary);
-      color: #fff;
-      padding: 14px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
-    }
-
-    header h1 {
-      font-size: 1.15rem;
-    }
-
-    header p {
-      font-size: 0.78rem;
-      opacity: .8;
-      margin-top: 2px;
-    }
-
-    /* ── Toolbar ── */
-    .toolbar {
-      background: #fff;
-      border-bottom: 1px solid var(--border-light);
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 6px 13px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.8rem;
-      font-weight: 600;
-      font-family: inherit;
-      transition: filter .15s;
-    }
-
-    .btn:hover {
-      filter: brightness(.92);
-    }
-
-    .btn-add {
-      background: #e0f2fe;
-      color: #0369a1;
-      border: 1.5px solid #7dd3fc;
-    }
-
-    .btn-del {
-      background: #fee2e2;
-      color: #b91c1c;
-      border: 1.5px solid #fca5a5;
-      padding: 3px 6px;
-      border-radius: 4px;
-    }
-
-    .btn-solve {
-      background: var(--success);
-      color: #fff;
-      padding: 7px 20px;
-      font-size: .9rem;
-    }
-
-    .btn-reset {
-      background: #f1f5f9;
-      color: #64748b;
-      border: 1.5px solid #cbd5e1;
-    }
-
-    .lbl {
-      font-size: .8rem;
-      font-weight: 600;
-      color: #64748b;
-    }
-
-    .toolbar input[type=number] {
-      width: 64px;
-      padding: 5px 7px;
-      border: 1.5px solid var(--border-light);
-      border-radius: 6px;
-      font-size: .85rem;
-      text-align: center;
-      font-family: inherit;
-    }
-
-    .sep {
-      width: 1px;
-      height: 28px;
-      background: var(--border-light);
-      margin: 0 4px;
-    }
-
-    /* ── Main table wrap ── */
-    .tbl-outer {
-      padding: 16px 20px;
-      overflow-x: auto;
-    }
-
-    table {
-      border-collapse: collapse;
-      min-width: 100%;
-    }
-
-    /* Cell base */
-    th,
-    td {
-      border: 1px solid var(--border);
-      padding: 0;
-      white-space: nowrap;
-    }
-
-    /* Sticky left columns */
-    .col-label {
-      position: sticky;
-      left: 0;
-      z-index: 2;
-      min-width: 130px;
-    }
-
-    .col-score {
-      position: sticky;
-      left: 130px;
-      z-index: 2;
-      min-width: 80px;
-    }
-
-    /* Row types */
-    .row-section-header td {
-      background: var(--primary);
-      color: #fff;
-      font-weight: 700;
-      text-align: center;
-      padding: 5px 8px;
-      font-size: .8rem;
-      letter-spacing: .03em;
-    }
-
-    .row-stock td {
-      background: #dbeafe;
-    }
-
-    .row-add td {
-      background: #fef9c3;
-    }
-
-    .row-avail td {
-      background: #bfdbfe;
-      font-weight: 700;
-    }
-
-    .row-menu td {
-      background: #fff;
-    }
-
-    .row-menu:hover td {
-      background: #f8fafc;
-    }
-
-    .row-used td {
-      background: #dcfce7;
-    }
-
-    .row-remain td {
-      background: #f0fdf4;
-      font-weight: 700;
-    }
-
-    .row-summary td {
-      background: var(--success);
-      color: #fff;
-      font-weight: 700;
-      font-size: .95rem;
-    }
-
-    /* Column header */
-    .col-header th {
-      background: #1e3a8a;
-      color: #fff;
-      text-align: center;
-      padding: 6px 10px;
-      font-size: .78rem;
-      font-weight: 700;
-      position: sticky;
-      top: 0;
-      z-index: 3;
-    }
-
-    .col-header th.col-label {
-      z-index: 4;
-      background: #1e3a8a;
-    }
-
-    .col-header th.col-score {
-      z-index: 4;
-      background: #1e3a8a;
-    }
-
-    /* Editable inputs */
-    input.cell-in {
-      width: 100%;
-      border: none;
-      background: transparent;
-      text-align: center;
-      font-size: 13px;
-      font-family: inherit;
-      color: #1e293b;
-      outline: none;
-      padding: 5px 8px;
-      cursor: pointer;
-    }
-
-    input.cell-in:focus {
-      background: #fff9c4;
-      cursor: text;
-    }
-
-    input.cell-in.name {
-      text-align: left;
-      min-width: 110px;
-      font-weight: 600;
-    }
-
-    input.cell-in.recipe-zero {
-      color: #f87171;
-      font-weight: 600;
-    }
-
-    input.cell-in.recipe-pos {
-      color: #1d4ed8;
-      font-weight: 700;
-    }
-
-    /* Read-only display cells */
-    .cell-ro {
-      display: block;
-      padding: 5px 10px;
-      text-align: center;
-      min-width: 60px;
-    }
-
-    .cell-ro.left {
-      text-align: left;
-      padding-left: 10px;
-      font-weight: 700;
-    }
-
-    /* Result coloring */
-    .res-qty {
-      background: #1d4ed8;
-      color: #fff;
-      font-weight: 800;
-      font-size: 1rem;
-      text-align: center;
-      padding: 5px 10px;
-    }
-
-    .res-zero {
-      color: #94a3b8;
-    }
-
-    .remain-ok {
-      background: #dcfce7;
-      color: #15803d;
-      font-weight: 700;
-    }
-
-    .remain-zero {
-      background: #fef9c3;
-      color: #92400e;
-      font-weight: 700;
-    }
-
-    .remain-neg {
-      background: #fee2e2;
-      color: var(--danger);
-      font-weight: 700;
-    }
-
-    .add-badge {
-      color: #92400e;
-      font-weight: 700;
-    }
-
-    /* result summary at bottom */
-    .result-bar {
-      background: var(--primary);
-      color: #fff;
-      padding: 14px 20px;
-      display: flex;
-      gap: 30px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .stat {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .stat-val {
-      font-size: 1.8rem;
-      font-weight: 800;
-      line-height: 1;
-    }
-
-    .stat-lbl {
-      font-size: .72rem;
-      opacity: .8;
-      margin-top: 2px;
-    }
-
-    .stat.green .stat-val {
-      color: #86efac;
-    }
-
-    .stat.yellow .stat-val {
-      color: #fde68a;
-    }
-
-    .infeasible {
-      background: #fee2e2;
-      color: var(--danger);
-      padding: 12px 20px;
-      font-weight: 700;
-    }
-
-    /* Spinner */
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    .spin {
-      display: inline-block;
-      animation: spin .8s linear infinite;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -399,6 +27,7 @@
     <div class="sep"></div>
     <button class="btn btn-solve" id="solveBtn" onclick="solve()">▶ คำนวณ LP</button>
     <button class="btn btn-reset" onclick="resetResults()">↺ ล้างผล</button>
+    <button class="btn btn-default" onclick="resetDefault()">⚠ Reset Default</button>
     <span id="solveMsg" style="font-size:.8rem;color:#64748b;"></span>
   </div>
 
@@ -408,30 +37,15 @@
 
   <div id="resultBar" style="display:none;"></div>
 
+  <script src="defaults.js"></script>
   <script src="https://unpkg.com/javascript-lp-solver@0.4.24/prod/solver.js"></script>
   <script>
     // ── Data ────────────────────────────────────────────────────────────────────
-    let ingredients = [
-      { name: 'แกะ' }, { name: 'พริก' }, { name: 'เนย' },
-      { name: 'white chocolate' }, { name: 'ไข่' }, { name: 'แป้ง' },
-      { name: 'เห็ด' }, { name: 'ชีส' }, { name: 'มะเขือเทศ' },
-      { name: 'ปลา' }, { name: 'เกลือ' }, { name: 'ไก่' },
-    ];
-    let stock = [169, 67, 182, 270, 99, 158, 132, 50, 14, 223, 86, 16];
-    let menus = [
-      { name: 'ซี่โครงแกะ', score: 40, recipe: [2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
-      { name: 'เค้ก', score: 40, recipe: [0, 0, 0, 2, 1, 1, 0, 0, 0, 0, 0, 0] },
-      { name: 'แรปเห็ด', score: 40, recipe: [0, 0, 0, 0, 1, 2, 1, 0, 0, 0, 0, 0] },
-      { name: 'มะเขือเทศอบ', score: 40, recipe: [0, 0, 0, 0, 1, 0, 0, 1, 2, 0, 0, 0] },
-      { name: 'ปลาย่าง', score: 40, recipe: [0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 1, 0] },
-      { name: 'ไก่ย่าง', score: 40, recipe: [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2] },
-    ];
-
-    // Results (set after solve)
-    let results = null;
-
-    // จำนวนทำเสร็จแล้วต่อเมนู
-    let done = [];
+    let ingredients = JSON.parse(JSON.stringify(DEFAULT_INGREDIENTS));
+    let stock       = [...DEFAULT_STOCK];
+    let menus       = JSON.parse(JSON.stringify(DEFAULT_MENUS));
+    let results     = null;
+    let done        = [];
 
     // ── Helpers ──────────────────────────────────────────────────────────────────
     const ni = () => ingredients.length;
@@ -475,7 +89,24 @@
       results = null;
       render();
     }
-    function resetResults() { results = null; render(); document.getElementById('resultBar').style.display = 'none'; }
+    function resetResults() {
+      results = null;
+      render();
+      document.getElementById('resultBar').style.display = 'none';
+    }
+    function resetDefault() {
+      if (!confirm('รีเซ็ตข้อมูลทั้งหมดกลับเป็น default?\n(วัตถุดิบ, สูตร, และจำนวนทำแล้วจะหายทั้งหมด)')) return;
+      ingredients = JSON.parse(JSON.stringify(DEFAULT_INGREDIENTS));
+      stock       = [...DEFAULT_STOCK];
+      menus       = JSON.parse(JSON.stringify(DEFAULT_MENUS));
+      done        = new Array(DEFAULT_MENUS.length).fill(0);
+      results     = null;
+      document.getElementById('maxAdd').value = DEFAULT_MAX_ADD;
+      localStorage.removeItem(STORAGE_KEY);
+      document.getElementById('resultBar').style.display = 'none';
+      document.getElementById('solveMsg').textContent = '';
+      render();
+    }
 
     // ── Render ───────────────────────────────────────────────────────────────────
     function render() {
@@ -484,7 +115,7 @@
       let html = '';
 
       const ingCols = ingredients.map((ing, j) => `
-    <th class="${j === 0 ? 'col-label' : ''}" style="${j === 0 ? 'left:130px;min-width:70px;' : ''}" >
+    <th class="${j === 0 ? 'col-label' : ''}" style="${j === 0 ? 'left:130px;min-width:70px;' : ''}">
       <div style="display:flex;align-items:center;gap:3px;justify-content:center;">
         <input class="cell-in" style="width:60px;font-size:.75rem;font-weight:700;color:#fff;background:transparent;text-align:center;"
           value="${ing.name}" oninput="ingredients[${j}].name=this.value; saveData()">
@@ -493,7 +124,6 @@
     </th>
   `).join('');
 
-      // Header
       html += `<tr class="col-header">
     <th class="col-label" style="min-width:130px; left:0;">รายการ</th>
     <th class="col-score" style="left:130px; min-width:80px;">คะแนน/จาน</th>
@@ -502,10 +132,9 @@
     <th style="min-width:90px;">ทำแล้ว</th>
   </tr>`;
 
-      // ── Section: วัตถุดิบ ──
+      // ── วัตถุดิบ ──
       html += `<tr class="row-section-header"><td colspan="${4 + n}" style="padding:4px 10px;">📦 วัตถุดิบ</td></tr>`;
 
-      // คงเหลือ row
       const stockCells = ingredients.map((_, j) =>
         `<td><input class="cell-in" type="number" min="0" value="${stock[j]}"
       oninput="stock[${j}]=+this.value; results=null; saveData()"></td>`
@@ -518,7 +147,6 @@
     <td><span class="cell-ro">—</span></td>
   </tr>`;
 
-      // ขอเพิ่ม row
       const addCells = ingredients.map((_, j) => {
         const v = results ? results.additionalReq[j] : 0;
         return `<td><span class="cell-ro ${v > 0 ? 'add-badge' : ''}">${results ? (v > 0 ? '+' + v : '0') : '—'}</span></td>`;
@@ -531,7 +159,6 @@
     <td><span class="cell-ro">—</span></td>
   </tr>`;
 
-      // รวมใช้ได้ row
       const availCells = ingredients.map((_, j) => {
         const v = results ? stock[j] + results.additionalReq[j] : stock[j];
         return `<td><span class="cell-ro" style="font-weight:700;">${v}</span></td>`;
@@ -544,7 +171,7 @@
     <td><span class="cell-ro">—</span></td>
   </tr>`;
 
-      // ── Section: เมนู ──
+      // ── เมนู ──
       html += `<tr class="row-section-header"><td colspan="${4 + n}" style="padding:4px 10px;">📋 เมนูอาหาร</td></tr>`;
 
       menus.forEach((menu, mi) => {
@@ -558,7 +185,7 @@
 
         const qty = results ? results.dishCounts[mi] : null;
         const qtyCellHtml = qty !== null
-          ? `<div class="${qty > 0 ? 'res-qty' : 'cell-ro res-zero'}" style="${qty > 0 ? '' : 'text-align:center;padding:5px;'}">${qty > 0 ? qty : '0'}</div>`
+          ? `<div class="${qty > 0 ? 'res-qty' : 'cell-ro res-zero'}" style="${qty > 0 ? '' : 'text-align:center;padding:5px;'}">${qty}</div>`
           : `<span class="cell-ro">—</span>`;
 
         html += `<tr class="row-menu">
@@ -579,11 +206,10 @@
     </tr>`;
       });
 
-      // ── Section: ผลลัพธ์ ──
+      // ── ผลลัพธ์ ──
       if (results) {
         html += `<tr class="row-section-header"><td colspan="${4 + n}" style="padding:4px 10px;">📊 สรุปการใช้วัตถุดิบ</td></tr>`;
 
-        // วัตถุดิบที่ใช้
         const usedCells = ingredients.map((_, j) => {
           const v = results.usage[j];
           return `<td><span class="cell-ro ${v === 0 ? 'res-zero' : ''}">${v}</span></td>`;
@@ -593,14 +219,13 @@
       <td class="col-score"><span class="cell-ro">—</span></td>
       ${usedCells}
       <td><span class="cell-ro" style="font-weight:700;text-align:center;">${results.totalDishes}</span></td>
-      <td><span class="cell-ro" style="font-weight:700;text-align:center;">${done.reduce((a,b)=>a+b,0)}</span></td>
+      <td><span class="cell-ro" style="font-weight:700;text-align:center;">${done.reduce((a, b) => a + b, 0)}</span></td>
     </tr>`;
 
-        // เหลือ
         const remainCells = ingredients.map((_, j) => {
           const avail = stock[j] + results.additionalReq[j];
-          const left = avail - results.usage[j];
-          const cls = left < 0 ? 'remain-neg' : left === 0 ? 'remain-zero' : 'remain-ok';
+          const left  = avail - results.usage[j];
+          const cls   = left < 0 ? 'remain-neg' : left === 0 ? 'remain-zero' : 'remain-ok';
           return `<td class="${cls}"><span class="cell-ro">${left}</span></td>`;
         }).join('');
         html += `<tr class="row-remain">
@@ -626,21 +251,11 @@
       setTimeout(() => {
         try {
           const maxAdd = parseInt(document.getElementById('maxAdd').value) || 0;
-          const n = ni(), m = nm();
+          const model  = { optimize: 'score', opType: 'max', constraints: {}, variables: {}, ints: {} };
 
-          const model = {
-            optimize: 'score',
-            opType: 'max',
-            constraints: {},
-            variables: {},
-            ints: {}
-          };
-
-          // Ingredient constraints
           ingredients.forEach((_, j) => { model.constraints[`ing${j}`] = { max: stock[j] }; });
           if (maxAdd > 0) model.constraints['totalAdd'] = { max: maxAdd };
 
-          // Menu decision variables
           menus.forEach((menu, i) => {
             const v = { score: menu.score };
             ingredients.forEach((_, j) => { if (menu.recipe[j]) v[`ing${j}`] = menu.recipe[j]; });
@@ -648,7 +263,6 @@
             model.ints[`m${i}`] = 1;
           });
 
-          // Additional ingredient variables (z_j: reduces constraint by 1 unit)
           if (maxAdd > 0) {
             ingredients.forEach((_, j) => {
               model.variables[`a${j}`] = { [`ing${j}`]: -1, totalAdd: 1 };
@@ -660,18 +274,17 @@
           const sol = solver.Solve(model);
           if (!sol.feasible) throw new Error('ไม่มีคำตอบที่เป็นไปได้');
 
-          const dishCounts = menus.map((_, i) => Math.round(sol[`m${i}`] || 0));
+          const dishCounts    = menus.map((_, i) => Math.round(sol[`m${i}`] || 0));
           const additionalReq = ingredients.map((_, j) => Math.round(sol[`a${j}`] || 0));
-          const usage = ingredients.map((_, j) =>
+          const usage         = ingredients.map((_, j) =>
             menus.reduce((s, menu, i) => s + (menu.recipe[j] || 0) * dishCounts[i], 0)
           );
           const totalDishes = dishCounts.reduce((a, b) => a + b, 0);
-          const totalScore = Math.round(sol.result || 0);
-          const totalAdded = additionalReq.reduce((a, b) => a + b, 0);
+          const totalScore  = Math.round(sol.result || 0);
+          const totalAdded  = additionalReq.reduce((a, b) => a + b, 0);
 
           results = { dishCounts, additionalReq, usage, totalDishes, totalScore, totalAdded };
 
-          // Summary bar
           const bar = document.getElementById('resultBar');
           bar.style.display = '';
           bar.innerHTML = `<div class="result-bar">
@@ -689,8 +302,7 @@
           render();
         } catch (e) {
           msg.textContent = '❌ ' + e.message;
-          document.getElementById('resultBar').innerHTML =
-            `<div class="infeasible">❌ ${e.message}</div>`;
+          document.getElementById('resultBar').innerHTML = `<div class="infeasible">❌ ${e.message}</div>`;
           document.getElementById('resultBar').style.display = '';
         }
         btn.disabled = false;
@@ -700,14 +312,12 @@
     // ── Grand Total (LP + ทำแล้ว) ────────────────────────────────────────────────
     function refreshTotals() {
       if (!results) return;
-      const doneDishes = done.reduce((a, b) => a + b, 0);
-      const doneScore  = menus.reduce((s, m, i) => s + (done[i] || 0) * m.score, 0);
-      const grandDishes = results.totalDishes + doneDishes;
-      const grandScore  = results.totalScore  + doneScore;
+      const doneDishes  = done.reduce((a, b) => a + b, 0);
+      const doneScore   = menus.reduce((s, m, i) => s + (done[i] || 0) * m.score, 0);
       const elD = document.getElementById('statDishes');
       const elS = document.getElementById('statScore');
-      if (elD) elD.textContent = grandDishes.toLocaleString();
-      if (elS) elS.textContent = grandScore.toLocaleString();
+      if (elD) elD.textContent = (results.totalDishes + doneDishes).toLocaleString();
+      if (elS) elS.textContent = (results.totalScore  + doneScore).toLocaleString();
     }
 
     // ── Persistence ──────────────────────────────────────────────────────────────
@@ -726,9 +336,9 @@
         if (!raw) return;
         const d = JSON.parse(raw);
         if (d.ingredients) ingredients = d.ingredients;
-        if (d.stock) stock = d.stock;
-        if (d.menus) menus = d.menus;
-        if (d.done) done = d.done;
+        if (d.stock)       stock       = d.stock;
+        if (d.menus)       menus       = d.menus;
+        if (d.done)        done        = d.done;
         if (d.maxAdd != null) document.getElementById('maxAdd').value = d.maxAdd;
       } catch (e) { /* ถ้า parse ไม่ได้ ใช้ default */ }
     }
